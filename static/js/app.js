@@ -30,27 +30,16 @@ d3.json(url).then(function (data) {
 
 );
 
-
-
 function optionChanged(id) {
     // console.log(sampleData)
     // alert('coming here') 
-    
     barChart(id);
     populateMetaData(id);
-
-    
-
-   
-
     // console.log(metaData);
     // let panelData = d3.select('.panel-body')
-
-
 }
 
-
-function barChart(id){
+function barChart(id) {
     let xValues = [];
     let yValues = [];
     let labels = [];
@@ -89,17 +78,14 @@ function barChart(id){
             autorange: 'reversed'
         }
     }
-
-
     Plotly.newPlot("bar", data1, layout);
 }
 
-function populateMetaData(id){
+function populateMetaData(id) {
     document.getElementById("sample-metadata").innerText = '';
-
     for (t = 0; t < metaData.length; t++) {
         if (id == metaData[t].id) {
-            let elements=[];
+            let elements = [];
             let metaDataId = `id: ${metaData[t].id}`
             let ethnicity = `ethnicity : ${metaData[t].ethnicity}`
             let gender = `gender: ${metaData[t].gender}`
@@ -115,7 +101,7 @@ function populateMetaData(id){
             elements.push(bbtype);
             elements.push(wfreq);
             for (var i = 0; i < elements.length; i++) {
-                document.getElementById("sample-metadata").innerText += elements[i] +"\n";
+                document.getElementById("sample-metadata").innerText += elements[i] + "\n";
             }
 
         }
