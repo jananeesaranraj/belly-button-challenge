@@ -32,11 +32,10 @@ d3.json(url).then(function (data) {
 
 function optionChanged(id) {
     // console.log(sampleData)
-    // alert('coming here') 
     barChart(id);
     populateMetaData(id);
     // console.log(metaData);
-    // let panelData = d3.select('.panel-body')
+    bubbleChart(id);
 }
 
 function barChart(id) {
@@ -50,7 +49,7 @@ function barChart(id) {
         if (id == sampleData[j].id) {
             xValues = sampleData[j].sample_values;
             slicedXvalue = xValues.slice(0, 10);
-            // console.log(slicedXvalue);
+            console.log(slicedXvalue);
             yValues = sampleData[j].otu_ids;
             slicedYvalue = yValues.slice(0, 10);
             for (k = 0; k < slicedYvalue.length; k++) {
@@ -62,6 +61,14 @@ function barChart(id) {
             // console.log(labels);
         }
     }
+    //  xValues = sampleData.filter((data)=> id==data.id).map(item => item.sample_values);
+    //  console.log(xValues);
+    //  let slicedXvalue = xValues.slice(0,50);
+    //  console.log(slicedXvalue);
+    //  yValues = sampleData.filter((data)=> id==data.id).map(item => item.otu_ids);
+    //  slicedYvalue = yValues.slice(0, 10);
+    // //  console.log(slicedYvalue)
+    //  labels = sampleData.filter((data)=> id==data.id).map(item => item.otu_labels);
     let trace = {
         x: slicedXvalue,
         y: slicedOtu,
@@ -70,9 +77,7 @@ function barChart(id) {
         name: 'Belly',
         orientation: 'h'
     }
-
     let data1 = [trace];
-
     let layout = {
         yaxis: {
             autorange: 'reversed'
@@ -83,29 +88,75 @@ function barChart(id) {
 
 function populateMetaData(id) {
     document.getElementById("sample-metadata").innerText = '';
-    for (t = 0; t < metaData.length; t++) {
-        if (id == metaData[t].id) {
-            let elements = [];
-            let metaDataId = `id: ${metaData[t].id}`
-            let ethnicity = `ethnicity : ${metaData[t].ethnicity}`
-            let gender = `gender: ${metaData[t].gender}`
-            let age = `age: ${metaData[t].age}`
-            let location = `location: ${metaData[t].location}`
-            let bbtype = `bbtype: ${metaData[t].bbtype}`
-            let wfreq = `wfreq: ${metaData[t].wfreq}`
-            elements.push(metaDataId);
-            elements.push(ethnicity);
-            elements.push(gender);
-            elements.push(age);
-            elements.push(location);
-            elements.push(bbtype);
-            elements.push(wfreq);
-            for (var i = 0; i < elements.length; i++) {
-                document.getElementById("sample-metadata").innerText += elements[i] + "\n";
-            }
-
-        }
+    let elements = [];
+    let filterData = metaData.filter((data) => id == data.id);
+    let metaDataId = filterData.map(item => `id: ${item.id}`);
+    let ethnicity = filterData.map(item => `ethnicity: ${item.ethnicity}`);
+    let gender = filterData.map(item => `gender: ${item.gender}`);
+    let age = filterData.map(item => `age: ${item.age}`);
+    let location = filterData.map(item => `location: ${item.location}`);
+    let bbtype = filterData.map(item => `bbtype: ${item.bbtype}`);
+    let wfreq = filterData.map(item => `wfreq:  ${item.wfreq}`);
+    elements.push(metaDataId);
+    elements.push(ethnicity);
+    elements.push(gender);
+    elements.push(age);
+    elements.push(location);
+    elements.push(bbtype);
+    elements.push(wfreq);
+    for (var i = 0; i < elements.length; i++) {
+        document.getElementById("sample-metadata").innerText += elements[i] + "\n";
     }
+}
+
+
+function bubbleChart(id) {
+    let xValues = [];
+    let yValues = [];
+    let color = [];
+    let size = [];
+    let text = [];
+    for (m = 0; m < sampleData.length; m++) {
+        if (id == sampleData[m].id) {
+            xValues = sampleData[m].otu_ids;
+            yValues = sampleData[m].sample_values;
+            color = sampleData[m].otu_ids;
+            console.log(color);
+            size = sampleData[m].sample_values;
+            text = sampleData[m].otu_labels
+        }
+        // marker size=sample_values,marker color=otu_ids,text=otu_labels
+    }
+
+
+    let trace1 = {
+        x: xValues,
+        y: yValues,
+        mode: 'markers',
+        marker: {
+            color: color,
+            size: size,
+            text: text,
+            colorscale: 'Jet'
+            // name: 'Bone',
+            // colors: [
+            //     '#00000b',
+            //     '#202035',
+            //     '#404060',
+            //     '#606a80',
+            //     '#80959f',
+            //     '#9fbfbf',
+            //     '#cfdfdf',
+            //     '#ffffff'
+            // ]
+        }
+    };
+
+    let data2 = [trace1];
+    let layout = {
+        title: 'Bubble Chart'
+    }
+    Plotly.newPlot('bubble', data2, layout);
 }
 
 
