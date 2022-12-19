@@ -9,26 +9,25 @@ console.log("Data Promise: ", dataPromise);
 let sampleData;
 let metaData;
 
-// Fetch the JSON data and console log it
-d3.json(url).then(function (data) {
-    // console.log(data);
-    sampleData = (data['samples']);
-    metaData = (data['metadata']);
-    // populate drop down with IDs
-    // on select -> pass the ID and get otu_values/ids and labels
-    //slice
-    //populate the chart
-
-    let ele = document.getElementById('selDataset');
-    for (let i = 0; i < sampleData.length; i++) {
-        // POPULATE SELECT ELEMENT WITH JSON.
-        ele.innerHTML = ele.innerHTML +
-            '<option value="' + sampleData[i]['id'] + '">' + sampleData[i]['id'] + '</option>';
+// funtion to load the page with data
+function init() {
+    // Fetch the JSON data and console log it
+    d3.json(url).then(function (data) {
+        // console.log(data);
+        sampleData = (data['samples']);
+        metaData = (data['metadata']);
+        let ele = document.getElementById('selDataset');
+        for (let i = 0; i < sampleData.length; i++) {
+            // POPULATE SELECT ELEMENT WITH JSON.
+            ele.innerHTML = ele.innerHTML +
+                '<option value="' + sampleData[i]['id'] + '">' + sampleData[i]['id'] + '</option>';
+        }
+        optionChanged(940);
     }
-    optionChanged(940);
+    );
 }
-
-);
+// call function
+init();
 
 function optionChanged(id) {
     // console.log(sampleData)
@@ -38,57 +37,52 @@ function optionChanged(id) {
     bubbleChart(id);
 }
 
+// Bar Chart
 function barChart(id) {
     let xValues = [];
     let yValues = [];
     let labels = [];
-    let slicedOtu = [];
-    let slicedXvalue = [];
-    let slicedYvalue = [];
-    for (j = 0; j < sampleData.length; j++) {
-        if (id == sampleData[j].id) {
-            xValues = sampleData[j].sample_values;
-            slicedXvalue = xValues.slice(0, 10);
-            console.log(slicedXvalue);
-            yValues = sampleData[j].otu_ids;
-            slicedYvalue = yValues.slice(0, 10);
-            for (k = 0; k < slicedYvalue.length; k++) {
-                slicedOtu.push('otu' + slicedYvalue[k])
-            };
-            // console.log(slicedOtu);
-            // console.log(slicedYvalue)
-            labels = sampleData[j].otu_labels;
-            // console.log(labels);
-        }
-    }
-    //  xValues = sampleData.filter((data)=> id==data.id).map(item => item.sample_values);
-    //  console.log(xValues);
-    //  let slicedXvalue = xValues.slice(0,50);
-    //  console.log(slicedXvalue);
-    //  yValues = sampleData.filter((data)=> id==data.id).map(item => item.otu_ids);
-    //  slicedYvalue = yValues.slice(0, 10);
-    // //  console.log(slicedYvalue)
-    //  labels = sampleData.filter((data)=> id==data.id).map(item => item.otu_labels);
+    // filter the data passing the id given by the user
+    filteredValues = sampleData.filter((data) => id == data.id)
+
+    // to the get array
+    filteredList = filteredValues[0];
+    console.log(filteredList)
+
+    //get the top 10 sample_values,otu_ids,otu_labels
+    xValues = filteredList.sample_values.slice(0, 10);
+    yValues = filteredList.otu_ids.slice(0, 10);
+    labels = filteredList.otu_labels.slice(0, 10);
+
+    // trace for bar chart
     let trace = {
-        x: slicedXvalue,
-        y: slicedOtu,
+        x: xValues,
+        y: yValues.map(val => `OTU ${val}`),
         text: labels,
         type: 'bar',
         name: 'Belly',
         orientation: 'h'
     }
+    //data
     let data1 = [trace];
+
+    //layout
     let layout = {
         yaxis: {
             autorange: 'reversed'
         }
     }
+    // Render the plot to the div tag with id "bar"
     Plotly.newPlot("bar", data1, layout);
 }
 
 function populateMetaData(id) {
+
+    // get the demographic box id
     document.getElementById("sample-metadata").innerText = '';
     let elements = [];
+
+    // get the metadata values for the entered id
     let filterData = metaData.filter((data) => id == data.id);
     let metaDataId = filterData.map(item => `id: ${item.id}`);
     let ethnicity = filterData.map(item => `ethnicity: ${item.ethnicity}`);
@@ -104,6 +98,8 @@ function populateMetaData(id) {
     elements.push(location);
     elements.push(bbtype);
     elements.push(wfreq);
+
+    //populate the values in the demographic box
     for (var i = 0; i < elements.length; i++) {
         document.getElementById("sample-metadata").innerText += elements[i] + "\n";
     }
@@ -116,19 +112,23 @@ function bubbleChart(id) {
     let color = [];
     let size = [];
     let text = [];
-    for (m = 0; m < sampleData.length; m++) {
-        if (id == sampleData[m].id) {
-            xValues = sampleData[m].otu_ids;
-            yValues = sampleData[m].sample_values;
-            color = sampleData[m].otu_ids;
-            console.log(color);
-            size = sampleData[m].sample_values;
-            text = sampleData[m].otu_labels
-        }
-        // marker size=sample_values,marker color=otu_ids,text=otu_labels
-    }
 
+    // filter the data passing the id given by the user
+    filteredValues = sampleData.filter((data) => id == data.id)
+    console.log(filteredValues)
+    // to the get array
+    filteredList = filteredValues[0];
 
+    // get xvalues,yvalues labels color and size
+    xValues = filteredList.otu_ids;
+    console.log(xValues)
+    yValues = filteredList.sample_values;
+    // console.log(yValues)
+    color = xValues;
+    size = yValues;
+    text = filteredList.otu_labels;
+
+    // trace for bubble chart
     let trace1 = {
         x: xValues,
         y: yValues,
@@ -137,28 +137,18 @@ function bubbleChart(id) {
             color: color,
             size: size,
             text: text,
-            colorscale: 'Jet'
-            // name: 'Bone',
-            // colors: [
-            //     '#00000b',
-            //     '#202035',
-            //     '#404060',
-            //     '#606a80',
-            //     '#80959f',
-            //     '#9fbfbf',
-            //     '#cfdfdf',
-            //     '#ffffff'
-            // ]
+            colorscale: 'Earth'
         }
     };
-
+    //data
     let data2 = [trace1];
+    //layout
     let layout = {
-        title: 'Bubble Chart'
+        hovermode: 'closest',
+        xaxis: { title: 'OTU ID' },
+        yaxis: { title: 'Sample Values'},
     }
+
+    // Render the plot to the div tag with id "bubble"
     Plotly.newPlot('bubble', data2, layout);
 }
-
-
-
-
