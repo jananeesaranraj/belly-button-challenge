@@ -156,25 +156,3 @@ function bubbleChart(id) {
     // Render the plot to the div tag with id "bubble"
     Plotly.newPlot('bubble', data2, layout);
 }
-
-// function gaugeChart(id) {
-//     filterData = metaData.filter((data) => id == data.id);
-//     let wfreq = filterData.map(item => item.wfreq);
-//     console.log(wfreq)
-//     data = [
-//         {
-//             // domain: { x: [0, 1], y: [0, 1] },
-//             // gauge: {
-//             //     axis: { range: [0, 9] }
-//             // },
-//             value: wfreq,
-//             name: id,
-//             text: wfreq,
-//             title: { text: "Belly button Washing Frequency" },
-//             type: "indicator",
-//             mode: "gauge+number+delta"
-//         }  
-//     ];
-//     // var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
-//     Plotly.newPlot('gauge', data);
-// }
