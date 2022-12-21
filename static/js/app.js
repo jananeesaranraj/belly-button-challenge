@@ -129,17 +129,17 @@ function bubbleChart(id) {
     // console.log(yValues)
     color = xValues;
     size = yValues;
-    text = filteredList.otu_labels;
+    labels = filteredList.otu_labels;
 
     // trace for bubble chart
     let trace1 = {
         x: xValues,
         y: yValues,
         mode: 'markers',
+        text: labels,
         marker: {
             color: color,
             size: size,
-            text: text,
             colorscale: 'Earth'
         }
     };
@@ -148,7 +148,6 @@ function bubbleChart(id) {
     //layout
     let layout = {
         title: `<b>OTUs Found in an Individual</b><br><b>id:${id}</b>`,
-        hovermode: 'closest',
         xaxis: { title: 'OTU ID' },
         yaxis: { title: 'Sample Values' },
     }
