@@ -69,6 +69,7 @@ function barChart(id) {
 
     //layout
     let layout = {
+        title: `<b>Top 10 OTUs Found in an Individual</b><br><b>id:${id}</b>`,
         yaxis: {
             autorange: 'reversed'
         }
@@ -146,6 +147,7 @@ function bubbleChart(id) {
     let data2 = [trace1];
     //layout
     let layout = {
+        title: `<b>OTUs Found in an Individual</b><br><b>id:${id}</b>`,
         hovermode: 'closest',
         xaxis: { title: 'OTU ID' },
         yaxis: { title: 'Sample Values' },
