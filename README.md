@@ -26,16 +26,16 @@ Completed the following steps:
 
 5. Displayed each key-value pair from the metadata JSON object somewhere on the page.
 
-![Meta_data_940](https://user-images.githubusercontent.com/112193116/209032831-15d1f961-9176-403a-849b-f40f15710317.png)
+![metaData_id_940](https://user-images.githubusercontent.com/112193116/209233584-8dbea54b-e79b-4638-9dfe-b08cdf91c390.png)
 
 6. Updated all the plots when a new sample is selected. Additionally, created  layout  for the dashboard. An example dashboard is shown as follows
 
 * Data and visualization based on test ID 940
 
-![ID940](https://user-images.githubusercontent.com/112193116/209032511-dc16baf3-e2d5-47fc-9cb6-ec6d7dda643d.png)
+![Screenshot_id_940](https://user-images.githubusercontent.com/112193116/209233589-6c00b941-d06b-4340-bb31-c12506a4de65.png)
 
 * Data and visualization based on test ID 1253
 
-![ID1253](https://user-images.githubusercontent.com/112193116/209032513-d0c9674c-1e38-436a-839d-2fb1391e99b7.png)
+![Screenshot_id_1253](https://user-images.githubusercontent.com/112193116/209233591-0c73edd7-43e7-4ed8-803e-c764c1c59c50.png)
 
 7. Deployed the app to a free static page hosting service, such as GitHub Pages.
