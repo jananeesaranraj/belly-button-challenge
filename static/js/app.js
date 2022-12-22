@@ -80,32 +80,48 @@ function barChart(id) {
 
 // Function for demographis box
 function populateMetaData(id) {
-
+   
     // get the demographic box id
-    document.getElementById("sample-metadata").innerText = '';
-    let elements = [];
+    let demobox = d3.select("#sample-metadata");
 
-    // get the metadata values for the entered id
+    // // get the metadata values for the entered id
     let filterData = metaData.filter((data) => id == data.id);
-    let metaDataId = filterData.map(item => `id: ${item.id}`);
-    let ethnicity = filterData.map(item => `ethnicity: ${item.ethnicity}`);
-    let gender = filterData.map(item => `gender: ${item.gender}`);
-    let age = filterData.map(item => `age: ${item.age}`);
-    let location = filterData.map(item => `location: ${item.location}`);
-    let bbtype = filterData.map(item => `bbtype: ${item.bbtype}`);
-    let wfreq = filterData.map(item => `wfreq:  ${item.wfreq}`);
-    elements.push(metaDataId);
-    elements.push(ethnicity);
-    elements.push(gender);
-    elements.push(age);
-    elements.push(location);
-    elements.push(bbtype);
-    elements.push(wfreq);
-
-    //populate the values in the demographic box
-    for (var i = 0; i < elements.length; i++) {
-        document.getElementById("sample-metadata").innerText += elements[i] + "\n";
-    }
+    console.log(filterData);
+    
+      // Modify the text of an HTML element
+    var demoValue = demobox.selectAll("p");
+    demoValue.html("");
+     
+    // get the data using key value
+    Object.entries(filterData[0]).forEach(([key,value])=>{
+        console.log(key,value);     
+        demobox.append("p").text(`${key} : ${value}`)
+    })
+   
+    ///alternate m,ethod using document.getElement
+    // // get the demographic box id
+    // document.getElementById("sample-metadata").innerText = '';
+    // let elements = [];
+    // // get the metadata values for the entered id
+    // let filterData = metaData.filter((data) => id == data.id);
+    // let metaDataId = filterData.map(item => `id: ${item.id}`);
+    // let ethnicity = filterData.map(item => `ethnicity: ${item.ethnicity}`);
+    // let gender = filterData.map(item => `gender: ${item.gender}`);
+    // let age = filterData.map(item => `age: ${item.age}`);
+    // let location = filterData.map(item => `location: ${item.location}`);
+    // let bbtype = filterData.map(item => `bbtype: ${item.bbtype}`);
+    // let wfreq = filterData.map(item => `wfreq:  ${item.wfreq}`);
+    // elements.push(metaDataId);
+    // elements.push(ethnicity);
+    // elements.push(gender);
+    // elements.push(age);
+    // elements.push(location);
+    // elements.push(bbtype);
+    // elements.push(wfreq);
+    // //populate the values in the demographic box
+    // for (var i = 0; i < elements.length; i++) {
+    //     document.getElementById("sample-metadata").innerText += elements[i] + "\n";
+    // }
 }
 
 // Bubble chart
