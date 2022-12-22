@@ -25,6 +25,8 @@ Completed the following steps:
 
 5. Displayed each key-value pair from the metadata JSON object somewhere on the page.
 
+![Meta_data_940](https://user-images.githubusercontent.com/112193116/209032831-15d1f961-9176-403a-849b-f40f15710317.png)
+
 6. Updated all the plots when a new sample is selected. Additionally, created  layout  for the dashboard. An example dashboard is shown as follows
 
 * Data and visualization based on test ID 940
